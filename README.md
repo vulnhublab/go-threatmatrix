@@ -2,7 +2,6 @@
 [![GitHub issues](https://img.shields.io/github/issues/khulnasoft/go-intelx?style=plastic)](https://github.com/khulnasoft/go-intelx/issues)
 [![GitHub license](https://img.shields.io/github/license/khulnasoft/go-intelx?style=plastic)](https://github.com/khulnasoft/go-intelx/blob/main/LICENSE)
 
-![go-banner](./Banner.png)
 go-intelx is a client library/SDK that allows developers to easily automate and integrate [IntelX](https://github.com/khulnasoft/IntelX) with their own set of tools!
 
 <!-- omit in toc -->
