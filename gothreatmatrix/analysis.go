@@ -66,8 +66,8 @@ type MultipleAnalysisResponse struct {
 //
 //	Endpoint: POST /api/analyze_observable
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/analyze_observable
-func (client *IntelXClient) CreateObservableAnalysis(ctx context.Context, params *ObservableAnalysisParams) (*AnalysisResponse, error) {
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/analyze_observable
+func (client *ThreatMatrixClient) CreateObservableAnalysis(ctx context.Context, params *ObservableAnalysisParams) (*AnalysisResponse, error) {
 	requestUrl := client.options.Url + constants.ANALYZE_OBSERVABLE_URL
 	method := "POST"
 	contentType := "application/json"
@@ -95,8 +95,8 @@ func (client *IntelXClient) CreateObservableAnalysis(ctx context.Context, params
 //
 //	Endpoint: POST /api/analyze_multiple_observables
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/analyze_multiple_observables
-func (client *IntelXClient) CreateMultipleObservableAnalysis(ctx context.Context, params *MultipleObservableAnalysisParams) (*MultipleAnalysisResponse, error) {
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/analyze_multiple_observables
+func (client *ThreatMatrixClient) CreateMultipleObservableAnalysis(ctx context.Context, params *MultipleObservableAnalysisParams) (*MultipleAnalysisResponse, error) {
 	requestUrl := client.options.Url + constants.ANALYZE_MULTIPLE_OBSERVABLES_URL
 	method := "POST"
 	contentType := "application/json"
@@ -123,8 +123,8 @@ func (client *IntelXClient) CreateMultipleObservableAnalysis(ctx context.Context
 //
 //	Endpoint: POST /api/analyze_file
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/analyze_file
-func (client *IntelXClient) CreateFileAnalysis(ctx context.Context, fileAnalysisParams *FileAnalysisParams) (*AnalysisResponse, error) {
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/analyze_file
+func (client *ThreatMatrixClient) CreateFileAnalysis(ctx context.Context, fileAnalysisParams *FileAnalysisParams) (*AnalysisResponse, error) {
 	requestUrl := client.options.Url + constants.ANALYZE_FILE_URL
 	// * Making the multiform data
 	body := &bytes.Buffer{}
@@ -201,8 +201,8 @@ func (client *IntelXClient) CreateFileAnalysis(ctx context.Context, fileAnalysis
 //
 //	Endpoint: POST /api/analyze_mutliple_files
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/analyze_multiple_files
-func (client *IntelXClient) CreateMultipleFileAnalysis(ctx context.Context, fileAnalysisParams *MultipleFileAnalysisParams) (*MultipleAnalysisResponse, error) {
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/analyze_multiple_files
+func (client *ThreatMatrixClient) CreateMultipleFileAnalysis(ctx context.Context, fileAnalysisParams *MultipleFileAnalysisParams) (*MultipleAnalysisResponse, error) {
 	requestUrl := client.options.Url + constants.ANALYZE_MULTIPLE_FILES_URL
 	// * Making the multiform data
 	body := &bytes.Buffer{}

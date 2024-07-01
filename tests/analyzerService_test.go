@@ -66,7 +66,7 @@ func TestAnalyzerServiceGetConfigs(t *testing.T) {
 		Input:      nil,
 		Data:       serverErrorString,
 		StatusCode: http.StatusInternalServerError,
-		Want: &gothreatmatrix.IntelXError{
+		Want: &gothreatmatrix.ThreatMatrixError{
 			StatusCode: http.StatusInternalServerError,
 			Message:    serverErrorString,
 		},
@@ -75,7 +75,7 @@ func TestAnalyzerServiceGetConfigs(t *testing.T) {
 		Input:      nil,
 		Data:       badGatewayErrorString,
 		StatusCode: http.StatusBadGateway,
-		Want: &gothreatmatrix.IntelXError{
+		Want: &gothreatmatrix.ThreatMatrixError{
 			StatusCode: http.StatusBadGateway,
 			Message:    badGatewayErrorString,
 		},
@@ -110,7 +110,7 @@ func TestAnalyzerServiceHealthCheck(t *testing.T) {
 		Input:      "notAnAnalyzer",
 		Data:       `{"errors": {"detail": "Analyzer doesn't exist"}}`,
 		StatusCode: http.StatusBadRequest,
-		Want: &gothreatmatrix.IntelXError{
+		Want: &gothreatmatrix.ThreatMatrixError{
 			StatusCode: http.StatusBadRequest,
 			Message:    `{"errors": {"detail": "Analyzer doesn't exist"}}`,
 		},

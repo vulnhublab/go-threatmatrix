@@ -14,16 +14,16 @@ type LoggerParams struct {
 	Level     logrus.Level
 }
 
-// IntelXLogger represents a logger to be used by the developer.
-// IntelXLogger implements the Logrus logger.
+// ThreatMatrixLogger represents a logger to be used by the developer.
+// ThreatMatrixLogger implements the Logrus logger.
 //
 // Logrus docs: https://github.com/sirupsen/logrus
-type IntelXLogger struct {
+type ThreatMatrixLogger struct {
 	Logger *logrus.Logger
 }
 
-// Init initializes the IntelXLogger via LoggerParams
-func (intelXLogger *IntelXLogger) Init(loggerParams *LoggerParams) {
+// Init initializes the ThreatMatrixLogger via LoggerParams
+func (threatMatrixLogger *ThreatMatrixLogger) Init(loggerParams *LoggerParams) {
 	logger := logrus.New()
 
 	// Where to log the data!
@@ -38,5 +38,5 @@ func (intelXLogger *IntelXLogger) Init(loggerParams *LoggerParams) {
 	}
 
 	logger.SetLevel(loggerParams.Level)
-	intelXLogger.Logger = logger
+	threatMatrixLogger.Logger = logger
 }

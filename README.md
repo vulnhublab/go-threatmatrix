@@ -2,7 +2,8 @@
 [![GitHub issues](https://img.shields.io/github/issues/khulnasoft/go-threatmatrix?style=plastic)](https://github.com/khulnasoft/go-threatmatrix/issues)
 [![GitHub license](https://img.shields.io/github/license/khulnasoft/go-threatmatrix?style=plastic)](https://github.com/khulnasoft/go-threatmatrix/blob/main/LICENSE)
 
-go-threatmatrix is a client library/SDK that allows developers to easily automate and integrate [IntelX](https://github.com/khulnasoft/IntelX) with their own set of tools!
+![go-banner](./Banner.png)
+go-threatmatrix is a client library/SDK that allows developers to easily automate and integrate [ThreatMatrix](https://github.com/khulnasoft/ThreatMatrix) with their own set of tools!
 
 <!-- omit in toc -->
 # Table of Contents
@@ -41,25 +42,25 @@ To start using the go-threatmatrix library you first need to import it:
 ```
 import "github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 ```
-Construct a new `IntelXClient`, then use the various services to easily access different parts of Intelx's REST API. Here's an example of getting all jobs:
+Construct a new `ThreatMatrixClient`, then use the various services to easily access different parts of Threatmatrix's REST API. Here's an example of getting all jobs:
 
 ```Go
-clientOptions := gothreatmatrix.IntelXClientOptions{
+clientOptions := gothreatmatrix.ThreatMatrixClientOptions{
 	Url:         "your-cool-URL-goes-here",
 	Token:       "your-super-secret-token-goes-here",
 	// This is optional
 	Certificate: "your-optional-certificate-goes-here",
 }
 
-intelx := gothreatmatrix.NewIntelXClient(
+threatmatrix := gothreatmatrix.NewThreatMatrixClient(
 	&clientOptions,
 	nil
 )
 
 ctx := context.Background()
 
-// returns *[]Jobs or an IntelXError!
-jobs, err := intelx.JobService.List(ctx)
+// returns *[]Jobs or an ThreatMatrixError!
+jobs, err := threatmatrix.JobService.List(ctx)
 ```
 For easy configuration and set up we opted for `options` structs. Where we can customize the client API or service endpoint to our liking! For more information go [here](). Here's a quick example!
 
@@ -71,7 +72,7 @@ tagOptions = gothreatmatrix.TagParams{
   Color: "#ffb703",
 }
 
-createdTag, err := intelx.TagService.Create(ctx, tagOptions)
+createdTag, err := threatmatrix.TagService.Create(ctx, tagOptions)
 if err != nil {
 	fmt.Println(err)
 } else {
@@ -91,14 +92,14 @@ import (
 )
 
 func main(){
-	intelxOptions := gothreatmatrix.IntelXClientOptions{
+	threatmatrixOptions := gothreatmatrix.ThreatMatrixClientOptions{
 		Url:         "your-cool-url-goes-here",
 		Token:       "your-super-secret-token-goes-here",
 		Certificate: "your-optional-certificate-goes-here",
 	}	
 
-	client := gothreatmatrix.NewIntelXClient(
-		&intelxOptions,
+	client := gothreatmatrix.NewThreatMatrixClient(
+		&threatmatrixOptions,
 		nil,
 	)
 
@@ -125,19 +126,19 @@ If you want to follow the updates, discuss, contribute, or just chat then please
 Licensed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 
 # Links
-- [Intelx](https://github.com/khulnasoft/IntelX)
-- [Documentation](https://intelx.readthedocs.io/en/latest/)
-- [API documentation](https://intelx.readthedocs.io/en/latest/Redoc.html)
+- [Threatmatrix](https://github.com/khulnasoft/ThreatMatrix)
+- [Documentation](https://threatmatrix.readthedocs.io/en/latest/)
+- [API documentation](https://threatmatrix.readthedocs.io/en/latest/Redoc.html)
 - [Examples](./examples/)
 
 # FAQ
 ## Generate API key
-You need a valid API key to interact with the IntelX server.
+You need a valid API key to interact with the ThreatMatrix server.
 ### v4.0 and above
 You can get an API by doing the following:
-1. Log / Signin into intelx
+1. Log / Signin into threatmatrix
 2. At the upper right click on your profile from the drop down select `API Access/ Sessions`
 3. Then generate an API key or see it!
 
 ### v4.0 below
-Keys should be created from the admin interface of [IntelX](https://github.com/khulnasoft/intelx): you have to go in the *Durin* section (click on `Auth tokens`) and generate a key there.
+Keys should be created from the admin interface of [ThreatMatrix](https://github.com/khulnasoft/threatmatrix): you have to go in the *Durin* section (click on `Auth tokens`) and generate a key there.

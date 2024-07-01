@@ -12,7 +12,7 @@ Now the reason we made this was that these fields were needed for every endpoint
 Now the testing suite used go's `httptest` library where we use `httptest.Server` as this setups a test server so that we can easily mock it. We also use `http.ServerMux` to mock our endpoints response.
 
 ## How to add a new test for an endpoint
-Lets say IntelX added a new endpoint called **supercool** in `Tag`. Now you've implemented the endpoint as a method of `TagService` and now you want to add its unit tests.
+Lets say ThreatMatrix added a new endpoint called **supercool** in `Tag`. Now you've implemented the endpoint as a method of `TagService` and now you want to add its unit tests.
 
 First go to `tagService_test.go` in the `tests` directory and add
 

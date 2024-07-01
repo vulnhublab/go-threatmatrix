@@ -9,18 +9,18 @@ import (
 
 func main() {
 	/*
-		Making a new client through NewIntelXClient:
+		Making a new client through NewThreatMatrixClient:
 		This takes the following parameters:
-			1. IntelXClientOptions
+			1. ThreatMatrixClientOptions
 			2. A *http.Client (if you do not provide one. One will be made by default)
 			3. LoggerParams
-		These are parameters that allow you to easily configure your IntelXClient to your liking.
+		These are parameters that allow you to easily configure your ThreatMatrixClient to your liking.
 		For a better understanding you can read it in the documentation: https://github.com/khulnasoft/go-threatmatrix/tree/main/examples/optionalParams
 	*/
 
-	// Configuring the IntelXClient!
-	clientOptions := gothreatmatrix.IntelXClientOptions{
-		Url:         "PUT-YOUR-INTELX-INSTANCE-URL-HERE",
+	// Configuring the ThreatMatrixClient!
+	clientOptions := gothreatmatrix.ThreatMatrixClientOptions{
+		Url:         "PUT-YOUR-THREATMATRIX-INSTANCE-URL-HERE",
 		Token:       "PUT-YOUR-TOKEN-HERE",
 		Certificate: "",
 		Timeout:     0,
@@ -34,7 +34,7 @@ func main() {
 	}
 
 	// Making the client!
-	client := gothreatmatrix.NewIntelXClient(
+	client := gothreatmatrix.NewThreatMatrixClient(
 		&clientOptions,
 		nil,
 		loggerParams,

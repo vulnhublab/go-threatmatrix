@@ -1,6 +1,6 @@
-// go-threatmatrix provides an SDK to easily integrate intelx with your own set of tools.
+// go-threatmatrix provides an SDK to easily integrate threatmatrix with your own set of tools.
 
-// go-threatmatrix makes it easy to automate, configure, and use intelx with your own set of tools
+// go-threatmatrix makes it easy to automate, configure, and use threatmatrix with your own set of tools
 // with its Idiomatic approach making an analysis is easy as just writing one line of code!
 package gothreatmatrix
 
@@ -16,8 +16,8 @@ import (
 	"time"
 )
 
-// IntelXError represents an error that has occurred when communicating with IntelX.
-type IntelXError struct {
+// ThreatMatrixError represents an error that has occurred when communicating with ThreatMatrix.
+type ThreatMatrixError struct {
 	StatusCode int
 	Message    string
 	Response   *http.Response
@@ -25,14 +25,14 @@ type IntelXError struct {
 
 // Error lets you implement the error interface.
 // This is used for making custom go errors.
-func (intelXError *IntelXError) Error() string {
-	errorMessage := fmt.Sprintf("Status Code: %d \n Error: %s", intelXError.StatusCode, intelXError.Message)
+func (threatMatrixError *ThreatMatrixError) Error() string {
+	errorMessage := fmt.Sprintf("Status Code: %d \n Error: %s", threatMatrixError.StatusCode, threatMatrixError.Message)
 	return errorMessage
 }
 
-// newIntelXError lets you easily create new IntelXErrors.
-func newIntelXError(statusCode int, message string, response *http.Response) *IntelXError {
-	return &IntelXError{
+// newThreatMatrixError lets you easily create new ThreatMatrixErrors.
+func newThreatMatrixError(statusCode int, message string, response *http.Response) *ThreatMatrixError {
+	return &ThreatMatrixError{
 		StatusCode: statusCode,
 		Message:    message,
 		Response:   response,
@@ -44,8 +44,8 @@ type successResponse struct {
 	Data       []byte
 }
 
-// IntelXClientOptions represents the fields needed to configure and use the IntelXClient
-type IntelXClientOptions struct {
+// ThreatMatrixClientOptions represents the fields needed to configure and use the ThreatMatrixClient
+type ThreatMatrixClientOptions struct {
 	Url   string `json:"url"`
 	Token string `json:"token"`
 	// Certificate represents your SSL cert: path to the cert file!
@@ -54,21 +54,21 @@ type IntelXClientOptions struct {
 	Timeout uint64 `json:"timeout"`
 }
 
-// IntelXClient handles all the communication with your IntelX instance.
-type IntelXClient struct {
-	options          *IntelXClientOptions
+// ThreatMatrixClient handles all the communication with your ThreatMatrix instance.
+type ThreatMatrixClient struct {
+	options          *ThreatMatrixClientOptions
 	client           *http.Client
 	TagService       *TagService
 	JobService       *JobService
 	AnalyzerService  *AnalyzerService
 	ConnectorService *ConnectorService
 	UserService      *UserService
-	Logger           *IntelXLogger
+	Logger           *ThreatMatrixLogger
 }
 
-// TLP represents an enum for the TLP attribute used in IntelX's REST API.
+// TLP represents an enum for the TLP attribute used in ThreatMatrix's REST API.
 //
-// IntelX docs: https://intelx.readthedocs.io/en/latest/Usage.html#tlp-support
+// ThreatMatrix docs: https://threatmatrix.readthedocs.io/en/latest/Usage.html#tlp-support
 type TLP int
 
 // Values of the TLP enum.
@@ -129,8 +129,8 @@ func (tlp *TLP) UnmarshalJSON(data []byte) (err error) {
 	return nil
 }
 
-// NewIntelXClient lets you easily create a new IntelXClient by providing IntelXClientOptions, http.Clients, and LoggerParams.
-func NewIntelXClient(options *IntelXClientOptions, httpClient *http.Client, loggerParams *LoggerParams) IntelXClient {
+// NewThreatMatrixClient lets you easily create a new ThreatMatrixClient by providing ThreatMatrixClientOptions, http.Clients, and LoggerParams.
+func NewThreatMatrixClient(options *ThreatMatrixClientOptions, httpClient *http.Client, loggerParams *LoggerParams) ThreatMatrixClient {
 
 	var timeout time.Duration
 
@@ -148,7 +148,7 @@ func NewIntelXClient(options *IntelXClientOptions, httpClient *http.Client, logg
 	}
 
 	// configuring the client
-	client := IntelXClient{
+	client := ThreatMatrixClient{
 		options: options,
 		client:  httpClient,
 	}
@@ -171,33 +171,33 @@ func NewIntelXClient(options *IntelXClientOptions, httpClient *http.Client, logg
 	}
 
 	// configuring the logger!
-	client.Logger = &IntelXLogger{}
+	client.Logger = &ThreatMatrixLogger{}
 	client.Logger.Init(loggerParams)
 
 	return client
 }
 
-// NewIntelXClientThroughJsonFile lets you create a new IntelXClient through a JSON file that contains your IntelXClientOptions
-func NewIntelXClientThroughJsonFile(filePath string, httpClient *http.Client, loggerParams *LoggerParams) (*IntelXClient, error) {
+// NewThreatMatrixClientThroughJsonFile lets you create a new ThreatMatrixClient through a JSON file that contains your ThreatMatrixClientOptions
+func NewThreatMatrixClientThroughJsonFile(filePath string, httpClient *http.Client, loggerParams *LoggerParams) (*ThreatMatrixClient, error) {
 	optionsBytes, err := os.ReadFile(filePath)
 	if err != nil {
 		errorMessage := fmt.Sprintf("Could not read %s", filePath)
-		intelXError := newIntelXError(400, errorMessage, nil)
-		return nil, intelXError
+		threatMatrixError := newThreatMatrixError(400, errorMessage, nil)
+		return nil, threatMatrixError
 	}
 
-	intelXClientOptions := &IntelXClientOptions{}
-	if unmarshalError := json.Unmarshal(optionsBytes, &intelXClientOptions); unmarshalError != nil {
+	threatMatrixClientOptions := &ThreatMatrixClientOptions{}
+	if unmarshalError := json.Unmarshal(optionsBytes, &threatMatrixClientOptions); unmarshalError != nil {
 		return nil, unmarshalError
 	}
 
-	intelXClient := NewIntelXClient(intelXClientOptions, httpClient, loggerParams)
+	threatMatrixClient := NewThreatMatrixClient(threatMatrixClientOptions, httpClient, loggerParams)
 
-	return &intelXClient, nil
+	return &threatMatrixClient, nil
 }
 
 // buildRequest is used for building requests.
-func (client *IntelXClient) buildRequest(ctx context.Context, method string, contentType string, body io.Reader, url string) (*http.Request, error) {
+func (client *ThreatMatrixClient) buildRequest(ctx context.Context, method string, contentType string, body io.Reader, url string) (*http.Request, error) {
 	request, err := http.NewRequestWithContext(ctx, method, url, body)
 	if err != nil {
 		return nil, err
@@ -211,7 +211,7 @@ func (client *IntelXClient) buildRequest(ctx context.Context, method string, con
 }
 
 // newRequest is used for making requests.
-func (client *IntelXClient) newRequest(ctx context.Context, request *http.Request) (*successResponse, error) {
+func (client *ThreatMatrixClient) newRequest(ctx context.Context, request *http.Request) (*successResponse, error) {
 	response, err := client.client.Do(request)
 
 	// Checking for context errors such as reaching the deadline and/or Timeout
@@ -230,14 +230,14 @@ func (client *IntelXClient) newRequest(ctx context.Context, request *http.Reques
 	statusCode := response.StatusCode
 	if err != nil {
 		errorMessage := fmt.Sprintf("Could not convert JSON response. Status code: %d", statusCode)
-		intelXError := newIntelXError(statusCode, errorMessage, response)
-		return nil, intelXError
+		threatMatrixError := newThreatMatrixError(statusCode, errorMessage, response)
+		return nil, threatMatrixError
 	}
 
 	if statusCode < http.StatusOK || statusCode >= http.StatusBadRequest {
 		errorMessage := string(msgBytes)
-		intelXError := newIntelXError(statusCode, errorMessage, response)
-		return nil, intelXError
+		threatMatrixError := newThreatMatrixError(statusCode, errorMessage, response)
+		return nil, threatMatrixError
 	}
 
 	sucessResp := successResponse{

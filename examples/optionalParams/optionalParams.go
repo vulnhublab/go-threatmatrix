@@ -14,9 +14,9 @@ For this example I'll be using the tag params!
 */
 func main() {
 
-	// Configuring the IntelXClient!
-	clientOptions := gothreatmatrix.IntelXClientOptions{
-		Url:         "PUT-YOUR-INTELX-INSTANCE-URL-HERE",
+	// Configuring the ThreatMatrixClient!
+	clientOptions := gothreatmatrix.ThreatMatrixClientOptions{
+		Url:         "PUT-YOUR-THREATMATRIX-INSTANCE-URL-HERE",
 		Token:       "PUT-YOUR-TOKEN-HERE",
 		Certificate: "",
 	}
@@ -28,7 +28,7 @@ func main() {
 	}
 
 	// Making the client!
-	client := gothreatmatrix.NewIntelXClient(
+	client := gothreatmatrix.NewThreatMatrixClient(
 		&clientOptions,
 		nil,
 		loggerParams,

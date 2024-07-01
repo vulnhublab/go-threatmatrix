@@ -9,9 +9,9 @@ import (
 	"github.com/khulnasoft/go-threatmatrix/constants"
 )
 
-// AnalyzerConfig represents how an analyzer is configured in IntelX.
+// AnalyzerConfig represents how an analyzer is configured in ThreatMatrix.
 //
-// IntelX docs: https://intelx.readthedocs.io/en/latest/Usage.html#analyzers-customization
+// ThreatMatrix docs: https://threatmatrix.readthedocs.io/en/latest/Usage.html#analyzers-customization
 type AnalyzerConfig struct {
 	BaseConfigurationType
 	Type                  string   `json:"type"`
@@ -25,18 +25,18 @@ type AnalyzerConfig struct {
 	ObservableSupported   []string `json:"observable_supported"`
 }
 
-// AnalyzerService handles communication with analyzer related methods of the IntelX API.
+// AnalyzerService handles communication with analyzer related methods of the ThreatMatrix API.
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/analyzer
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/analyzer
 type AnalyzerService struct {
-	client *IntelXClient
+	client *ThreatMatrixClient
 }
 
-// GetConfigs lists down every analyzer configuration in your IntelX instance.
+// GetConfigs lists down every analyzer configuration in your ThreatMatrix instance.
 //
 //	Endpoint: GET /api/get_analyzer_configs
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/get_analyzer_configs
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/get_analyzer_configs
 func (analyzerService *AnalyzerService) GetConfigs(ctx context.Context) (*[]AnalyzerConfig, error) {
 	requestUrl := analyzerService.client.options.Url + constants.ANALYZER_CONFIG_URL
 	contentType := "application/json"
@@ -74,7 +74,7 @@ func (analyzerService *AnalyzerService) GetConfigs(ctx context.Context) (*[]Anal
 //
 //	Endpoint: GET /api/analyzer/{NameOfAnalyzer}/healthcheck
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/analyzer/operation/analyzer_healthcheck_retrieve
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/analyzer/operation/analyzer_healthcheck_retrieve
 func (analyzerService *AnalyzerService) HealthCheck(ctx context.Context, analyzerName string) (bool, error) {
 	route := analyzerService.client.options.Url + constants.ANALYZER_HEALTHCHECK_URL
 	requestUrl := fmt.Sprintf(route, analyzerName)

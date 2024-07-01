@@ -21,13 +21,13 @@ type TestData struct {
 }
 
 // Setting up the router, client, and test server
-func setup() (testClient gothreatmatrix.IntelXClient, apiHandler *http.ServeMux, closeServer func()) {
+func setup() (testClient gothreatmatrix.ThreatMatrixClient, apiHandler *http.ServeMux, closeServer func()) {
 
 	apiHandler = http.NewServeMux()
 
 	testServer := httptest.NewServer(apiHandler)
 
-	testClient = NewTestIntelXClient(testServer.URL)
+	testClient = NewTestThreatMatrixClient(testServer.URL)
 
 	return testClient, apiHandler, testServer.Close
 
@@ -47,7 +47,7 @@ func testMethod(t *testing.T, request *http.Request, wantedMethod string) {
 func testError(t *testing.T, testData TestData, err error) {
 	t.Helper()
 	if testData.StatusCode < http.StatusOK || testData.StatusCode >= http.StatusBadRequest {
-		diff := cmp.Diff(testData.Want, err, cmpopts.IgnoreFields(gothreatmatrix.IntelXError{}, "Response"))
+		diff := cmp.Diff(testData.Want, err, cmpopts.IgnoreFields(gothreatmatrix.ThreatMatrixError{}, "Response"))
 		if diff != "" {
 			t.Fatalf(diff)
 		}
@@ -82,9 +82,9 @@ func serverHandler(t *testing.T, testData TestData, expectedMethod string) http.
 	return http.HandlerFunc(handler)
 }
 
-func NewTestIntelXClient(url string) gothreatmatrix.IntelXClient {
-	return gothreatmatrix.NewIntelXClient(
-		&gothreatmatrix.IntelXClientOptions{
+func NewTestThreatMatrixClient(url string) gothreatmatrix.ThreatMatrixClient {
+	return gothreatmatrix.NewThreatMatrixClient(
+		&gothreatmatrix.ThreatMatrixClientOptions{
 			Url:         url,
 			Token:       "test-token",
 			Certificate: "",

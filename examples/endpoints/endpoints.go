@@ -11,9 +11,9 @@ import (
 
 func main() {
 
-	// Configuring the IntelXClient!
-	clientOptions := gothreatmatrix.IntelXClientOptions{
-		Url:         "PUT-YOUR-INTELX-INSTANCE-URL-HERE",
+	// Configuring the ThreatMatrixClient!
+	clientOptions := gothreatmatrix.ThreatMatrixClientOptions{
+		Url:         "PUT-YOUR-THREATMATRIX-INSTANCE-URL-HERE",
 		Token:       "PUT-YOUR-TOKEN-HERE",
 		Certificate: "",
 	}
@@ -25,7 +25,7 @@ func main() {
 	}
 
 	// Making the client!
-	client := gothreatmatrix.NewIntelXClient(
+	client := gothreatmatrix.NewThreatMatrixClient(
 		&clientOptions,
 		nil,
 		loggerParams,
@@ -34,7 +34,7 @@ func main() {
 	ctx := context.Background()
 
 	/*
-		Now we can use the client to commnicate with your intelx instance via the service objects!
+		Now we can use the client to commnicate with your threatmatrix instance via the service objects!
 		For this example I want to Display my tags list and create a new tag!
 	*/
 
@@ -42,7 +42,7 @@ func main() {
 
 	// Getting the tag list!
 	tagList, err := client.TagService.List(ctx)
-	// checking for any pesky errors if there's any error it'll return an IntelXError
+	// checking for any pesky errors if there's any error it'll return an ThreatMatrixError
 	if err != nil {
 		fmt.Println(err)
 	} else {

@@ -9,26 +9,26 @@ import (
 	"github.com/khulnasoft/go-threatmatrix/constants"
 )
 
-// ConnectorConfig represents how a connector is configured in IntelX.
+// ConnectorConfig represents how a connector is configured in ThreatMatrix.
 //
-// IntelX docs: https://intelx.readthedocs.io/en/latest/Usage.html#connectors-customization
+// ThreatMatrix docs: https://threatmatrix.readthedocs.io/en/latest/Usage.html#connectors-customization
 type ConnectorConfig struct {
 	BaseConfigurationType
 	MaximumTlp TLP `json:"maximum_tlp"`
 }
 
-// ConnectorService handles communication with connector related methods of the IntelX API.
+// ConnectorService handles communication with connector related methods of the ThreatMatrix API.
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/connector
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/connector
 type ConnectorService struct {
-	client *IntelXClient
+	client *ThreatMatrixClient
 }
 
-// GetConfigs lists down every connector configuration in your IntelX instance.
+// GetConfigs lists down every connector configuration in your ThreatMatrix instance.
 //
 //	Endpoint: GET /api/get_connector_configs
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/get_connector_configs
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/get_connector_configs
 func (connectorService *ConnectorService) GetConfigs(ctx context.Context) (*[]ConnectorConfig, error) {
 	requestUrl := connectorService.client.options.Url + constants.CONNECTOR_CONFIG_URL
 	contentType := "application/json"
@@ -66,7 +66,7 @@ func (connectorService *ConnectorService) GetConfigs(ctx context.Context) (*[]Co
 //
 //	Endpoint: GET /api/connector/{NameOfConnector}/healthcheck
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/connector/operation/connector_healthcheck_retrieve
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/connector/operation/connector_healthcheck_retrieve
 func (connectorService *ConnectorService) HealthCheck(ctx context.Context, connectorName string) (bool, error) {
 	route := connectorService.client.options.Url + constants.CONNECTOR_HEALTHCHECK_URL
 	requestUrl := fmt.Sprintf(route, connectorName)

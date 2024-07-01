@@ -17,18 +17,18 @@ type TagParams struct {
 	Color string `json:"color"`
 }
 
-// Tag represents a tag in an IntelX job.
+// Tag represents a tag in an ThreatMatrix job.
 type Tag struct {
 	ID    uint64 `json:"id"`
 	Label string `json:"label"`
 	Color string `json:"color"`
 }
 
-// TagService handles communication with tag related methods of IntelX API.
+// TagService handles communication with tag related methods of ThreatMatrix API.
 //
-// IntelX REST API tag docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/tags
+// ThreatMatrix REST API tag docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/tags
 type TagService struct {
-	client *IntelXClient
+	client *ThreatMatrixClient
 }
 
 // checkTagID is used to check if a tag	ID is valid (id should be greater than zero).
@@ -39,11 +39,11 @@ func checkTagID(id uint64) error {
 	return errors.New("Tag ID cannot be 0")
 }
 
-// List fetches all the working tags in IntelX.
+// List fetches all the working tags in ThreatMatrix.
 //
 //	Endpoint: GET "/api/tags"
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/tags/operation/tags_list
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/tags/operation/tags_list
 func (tagService *TagService) List(ctx context.Context) (*[]Tag, error) {
 	requestUrl := tagService.client.options.Url + constants.BASE_TAG_URL
 	contentType := "application/json"
@@ -69,7 +69,7 @@ func (tagService *TagService) List(ctx context.Context) (*[]Tag, error) {
 //
 //	Endpoint: GET "/api/tags/{id}"
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/tags/operation/tags_retrieve
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/tags/operation/tags_retrieve
 func (tagService *TagService) Get(ctx context.Context, tagId uint64) (*Tag, error) {
 	if err := checkTagID(tagId); err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (tagService *TagService) Get(ctx context.Context, tagId uint64) (*Tag, erro
 //
 //	Endpoint: POST "/api/tags/"
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/tags/operation/tags_create
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/tags/operation/tags_create
 func (tagService *TagService) Create(ctx context.Context, tagParams *TagParams) (*Tag, error) {
 	requestUrl := tagService.client.options.Url + constants.BASE_TAG_URL
 	tagJson, err := json.Marshal(tagParams)
@@ -128,7 +128,7 @@ func (tagService *TagService) Create(ctx context.Context, tagParams *TagParams) 
 //
 //	Endpoint: PUT "/api/tags/{id}"
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/tags/operation/tags_update
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/tags/operation/tags_update
 func (tagService *TagService) Update(ctx context.Context, tagId uint64, tagParams *TagParams) (*Tag, error) {
 	route := tagService.client.options.Url + constants.SPECIFIC_TAG_URL
 	requestUrl := fmt.Sprintf(route, tagId)
@@ -157,11 +157,11 @@ func (tagService *TagService) Update(ctx context.Context, tagId uint64, tagParam
 	return &updatedTag, nil
 }
 
-// Delete removes the given tag from your IntelX instance.
+// Delete removes the given tag from your ThreatMatrix instance.
 //
 //	Endpoint: DELETE "/api/tags/{id}"
 //
-// IntelX REST API docs: https://intelx.readthedocs.io/en/latest/Redoc.html#tag/tags/operation/tags_destroy
+// ThreatMatrix REST API docs: https://threatmatrix.readthedocs.io/en/latest/Redoc.html#tag/tags/operation/tags_destroy
 func (tagService *TagService) Delete(ctx context.Context, tagId uint64) (bool, error) {
 	if err := checkTagID(tagId); err != nil {
 		return false, err
