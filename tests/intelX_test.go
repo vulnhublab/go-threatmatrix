@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/khulnasoft/go-intelx/gointelx"
+	"github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 	"github.com/sirupsen/logrus"
 )
 
@@ -21,7 +21,7 @@ type TestData struct {
 }
 
 // Setting up the router, client, and test server
-func setup() (testClient gointelx.IntelXClient, apiHandler *http.ServeMux, closeServer func()) {
+func setup() (testClient gothreatmatrix.IntelXClient, apiHandler *http.ServeMux, closeServer func()) {
 
 	apiHandler = http.NewServeMux()
 
@@ -47,7 +47,7 @@ func testMethod(t *testing.T, request *http.Request, wantedMethod string) {
 func testError(t *testing.T, testData TestData, err error) {
 	t.Helper()
 	if testData.StatusCode < http.StatusOK || testData.StatusCode >= http.StatusBadRequest {
-		diff := cmp.Diff(testData.Want, err, cmpopts.IgnoreFields(gointelx.IntelXError{}, "Response"))
+		diff := cmp.Diff(testData.Want, err, cmpopts.IgnoreFields(gothreatmatrix.IntelXError{}, "Response"))
 		if diff != "" {
 			t.Fatalf(diff)
 		}
@@ -82,15 +82,15 @@ func serverHandler(t *testing.T, testData TestData, expectedMethod string) http.
 	return http.HandlerFunc(handler)
 }
 
-func NewTestIntelXClient(url string) gointelx.IntelXClient {
-	return gointelx.NewIntelXClient(
-		&gointelx.IntelXClientOptions{
+func NewTestIntelXClient(url string) gothreatmatrix.IntelXClient {
+	return gothreatmatrix.NewIntelXClient(
+		&gothreatmatrix.IntelXClientOptions{
 			Url:         url,
 			Token:       "test-token",
 			Certificate: "",
 		},
 		nil,
-		&gointelx.LoggerParams{
+		&gothreatmatrix.LoggerParams{
 			File:      nil,
 			Formatter: nil,
 			Level:     logrus.DebugLevel,

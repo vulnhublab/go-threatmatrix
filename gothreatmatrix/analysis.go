@@ -1,4 +1,4 @@
-package gointelx
+package gothreatmatrix
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/khulnasoft/go-intelx/constants"
+	"github.com/khulnasoft/go-threatmatrix/constants"
 )
 
 // BasicAnalysisParams represents the common fields in an Observable and a File analysis

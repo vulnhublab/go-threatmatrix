@@ -1,4 +1,4 @@
-package gointelx
+package gothreatmatrix
 
 type ConfigType struct {
 	Queue         string `json:"queue"`

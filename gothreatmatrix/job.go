@@ -1,4 +1,4 @@
-package gointelx
+package gothreatmatrix
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/khulnasoft/go-intelx/constants"
+	"github.com/khulnasoft/go-threatmatrix/constants"
 )
 
 // UserDetails represents user details in an IntelX job.

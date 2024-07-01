@@ -1,12 +1,12 @@
-# go-intelx
-[![GitHub issues](https://img.shields.io/github/issues/khulnasoft/go-intelx?style=plastic)](https://github.com/khulnasoft/go-intelx/issues)
-[![GitHub license](https://img.shields.io/github/license/khulnasoft/go-intelx?style=plastic)](https://github.com/khulnasoft/go-intelx/blob/main/LICENSE)
+# go-threatmatrix
+[![GitHub issues](https://img.shields.io/github/issues/khulnasoft/go-threatmatrix?style=plastic)](https://github.com/khulnasoft/go-threatmatrix/issues)
+[![GitHub license](https://img.shields.io/github/license/khulnasoft/go-threatmatrix?style=plastic)](https://github.com/khulnasoft/go-threatmatrix/blob/main/LICENSE)
 
-go-intelx is a client library/SDK that allows developers to easily automate and integrate [IntelX](https://github.com/khulnasoft/IntelX) with their own set of tools!
+go-threatmatrix is a client library/SDK that allows developers to easily automate and integrate [IntelX](https://github.com/khulnasoft/IntelX) with their own set of tools!
 
 <!-- omit in toc -->
 # Table of Contents
-- [go-intelx](#go-intelx)
+- [go-threatmatrix](#go-threatmatrix)
 - [Getting Started](#getting-started)
 	- [Pre requisites](#pre-requisites)
 	- [Installation](#installation)
@@ -31,27 +31,27 @@ go-intelx is a client library/SDK that allows developers to easily automate and 
 Use go get to retrieve the SDK to add it to your GOPATH workspace, or project's Go module dependencies.
 
 ```bash
-$ go get github.com/khulnasoft/go-intelx
+$ go get github.com/khulnasoft/go-threatmatrix
 ```
 
 ## Usage
 This library was built with ease of use in mind! Here are some quick examples to get you started. If you need more example you can go to the [examples directory](./examples/)
 
-To start using the go-intelx library you first need to import it:
+To start using the go-threatmatrix library you first need to import it:
 ```
-import "github.com/khulnasoft/go-intelx/gointelx"
+import "github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 ```
 Construct a new `IntelXClient`, then use the various services to easily access different parts of Intelx's REST API. Here's an example of getting all jobs:
 
 ```Go
-clientOptions := gointelx.IntelXClientOptions{
+clientOptions := gothreatmatrix.IntelXClientOptions{
 	Url:         "your-cool-URL-goes-here",
 	Token:       "your-super-secret-token-goes-here",
 	// This is optional
 	Certificate: "your-optional-certificate-goes-here",
 }
 
-intelx := gointelx.NewIntelXClient(
+intelx := gothreatmatrix.NewIntelXClient(
 	&clientOptions,
 	nil
 )
@@ -66,7 +66,7 @@ For easy configuration and set up we opted for `options` structs. Where we can c
 ```Go
 // ...Making the client and context!
 
-tagOptions = gointelx.TagParams{
+tagOptions = gothreatmatrix.TagParams{
   Label: "NEW TAG",
   Color: "#ffb703",
 }
@@ -87,17 +87,17 @@ package main
 import (
 	"fmt"
 
-	"github.com/khulnasoft/go-intelx/gointelx"
+	"github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 )
 
 func main(){
-	intelxOptions := gointelx.IntelXClientOptions{
+	intelxOptions := gothreatmatrix.IntelXClientOptions{
 		Url:         "your-cool-url-goes-here",
 		Token:       "your-super-secret-token-goes-here",
 		Certificate: "your-optional-certificate-goes-here",
 	}	
 
-	client := gointelx.NewIntelXClient(
+	client := gothreatmatrix.NewIntelXClient(
 		&intelxOptions,
 		nil,
 	)
@@ -116,7 +116,7 @@ func main(){
 }
 
 ```
-For complete usage of go-intelx, see the full [package docs](https://pkg.go.dev/github.com/khulnasoft/go-intelx).
+For complete usage of go-threatmatrix, see the full [package docs](https://pkg.go.dev/github.com/khulnasoft/go-threatmatrix).
 
 # Contribute
 If you want to follow the updates, discuss, contribute, or just chat then please join our [slack](https://honeynetpublic.slack.com/archives/C01KVGMAKL6) channel we'd love to hear your feedback!

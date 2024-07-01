@@ -8,13 +8,13 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/khulnasoft/go-intelx/constants"
-	"github.com/khulnasoft/go-intelx/gointelx"
+	"github.com/khulnasoft/go-threatmatrix/constants"
+	"github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 )
 
 func TestConnectorServiceGetConfigs(t *testing.T) {
 	connectorConfigJsonString := `{"MISP":{"name":"MISP","python_module":"misp.MISP","disabled":true,"description":"Automatically creates an event on your MISP instance, linking the successful analysis on IntelX","config":{"queue":"default","soft_time_limit":30},"secrets":{"api_key_name":{"env_var_key":"CONNECTOR_MISP_KEY","description":"API key for your MISP instance","required":true},"url_key_name":{"env_var_key":"CONNECTOR_MISP_URL","description":"URL of your MISP instance","required":true}},"params":{"ssl_check":{"value":true,"type":"bool","description":"Enable SSL certificate server verification. Change this if your MISP instance has not SSL enabled."},"debug":{"value":false,"type":"bool","description":"Enable debug logs."},"tlp":{"value":"white","type":"str","description":"Change this as per your organization's threat sharing conventions."}},"verification":{"configured":false,"error_message":"(api_key_name,url_key_name) not set; (0 of 2 satisfied)","missing_secrets":["api_key_name","url_key_name"]},"maximum_tlp":"WHITE"},"OpenCTI":{"name":"OpenCTI","python_module":"opencti.OpenCTI","disabled":true,"description":"Automatically creates an observable and a linked report on your OpenCTI instance, linking the successful analysis on IntelX","config":{"queue":"default","soft_time_limit":30},"secrets":{"api_key_name":{"env_var_key":"CONNECTOR_OPENCTI_KEY","description":"API key for your OpenCTI instance","required":true},"url_key_name":{"env_var_key":"CONNECTOR_OPENCTI_URL","description":"URL of your OpenCTI instance","required":true}},"params":{"ssl_verify":{"value":true,"type":"bool","description":"Enable SSL certificate server verification. Change this if your OpenCTI instance has not SSL enabled."},"proxies":{"value":{"http":"","https":""},"type":"dict","description":"Use these options to pass your request through a proxy server."},"tlp":{"value":{"type":"white","color":"#ffffff","x_opencti_order":1},"type":"dict","description":"Change this as per your organization's threat sharing conventions."}},"verification":{"configured":false,"error_message":"(api_key_name,url_key_name) not set; (0 of 2 satisfied)","missing_secrets":["api_key_name","url_key_name"]},"maximum_tlp":"WHITE"},"YETI":{"name":"YETI","python_module":"yeti.YETI","disabled":true,"description":"find or create observable on YETI, linking the successful analysis on IntelX.","config":{"queue":"default","soft_time_limit":30},"secrets":{"api_key_name":{"env_var_key":"CONNECTOR_YETI_KEY","description":"API key for your YETI instance","required":true},"url_key_name":{"env_var_key":"CONNECTOR_YETI_URL","description":"API URL of your YETI instance","required":true}},"params":{"verify_ssl":{"value":true,"type":"bool","description":"Enable SSL certificate server verification. Change this if your YETI instance has not SSL enabled."}},"verification":{"configured":false,"error_message":"(api_key_name,url_key_name) not set; (0 of 2 satisfied)","missing_secrets":["api_key_name","url_key_name"]},"maximum_tlp":"WHITE"}}`
-	connectorConfigurationResponse := map[string]gointelx.ConnectorConfig{}
+	connectorConfigurationResponse := map[string]gothreatmatrix.ConnectorConfig{}
 	if unmarshalError := json.Unmarshal([]byte(connectorConfigJsonString), &connectorConfigurationResponse); unmarshalError != nil {
 		t.Fatalf("Error: %s", unmarshalError)
 	}
@@ -25,7 +25,7 @@ func TestConnectorServiceGetConfigs(t *testing.T) {
 	}
 	// * sorting them alphabetically
 	sort.Strings(connectorNames)
-	connectorConfigurationList := []gointelx.ConnectorConfig{}
+	connectorConfigurationList := []gothreatmatrix.ConnectorConfig{}
 	for _, connectorName := range connectorNames {
 		connectorConfig := connectorConfigurationResponse[connectorName]
 		connectorConfigurationList = append(connectorConfigurationList, connectorConfig)
@@ -68,7 +68,7 @@ func TestConnectorServiceHealthCheck(t *testing.T) {
 		Input:      "notAConnector",
 		Data:       `{"errors": {"detail": "Connector doesn't exist"}}`,
 		StatusCode: http.StatusBadRequest,
-		Want: &gointelx.IntelXError{
+		Want: &gothreatmatrix.IntelXError{
 			StatusCode: http.StatusBadRequest,
 			Message:    `{"errors": {"detail": "Connector doesn't exist"}}`,
 		},

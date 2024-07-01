@@ -1,4 +1,4 @@
-package gointelx
+package gothreatmatrix
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/khulnasoft/go-intelx/constants"
+	"github.com/khulnasoft/go-threatmatrix/constants"
 )
 
 // ConnectorConfig represents how a connector is configured in IntelX.

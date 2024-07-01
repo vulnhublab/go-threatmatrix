@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/khulnasoft/go-intelx/constants"
-	"github.com/khulnasoft/go-intelx/gointelx"
+	"github.com/khulnasoft/go-threatmatrix/constants"
+	"github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 )
 
 // * Test for TagService.List method!
@@ -23,7 +23,7 @@ func TestTagServiceList(t *testing.T) {
 			{"id": 3,"label": "TEST3","color": "#1c71d6"}
 		]`,
 		StatusCode: http.StatusOK,
-		Want: []gointelx.Tag{
+		Want: []gothreatmatrix.Tag{
 			{
 				ID:    1,
 				Label: "TEST1",
@@ -63,7 +63,7 @@ func TestTagServiceGet(t *testing.T) {
 		Input:      1,
 		StatusCode: http.StatusOK,
 		Data:       `{"id": 1,"label": "TEST","color": "#1c71d8"}`,
-		Want: &gointelx.Tag{
+		Want: &gothreatmatrix.Tag{
 			ID:    1,
 			Label: "TEST",
 			Color: "#1c71d8",
@@ -73,7 +73,7 @@ func TestTagServiceGet(t *testing.T) {
 		Input:      9000,
 		StatusCode: http.StatusNotFound,
 		Data:       `{"detail": "Not found."}`,
-		Want: &gointelx.IntelXError{
+		Want: &gothreatmatrix.IntelXError{
 			StatusCode: http.StatusNotFound,
 			Message:    `{"detail": "Not found."}`,
 		},
@@ -108,26 +108,26 @@ func TestTagServiceCreate(t *testing.T) {
 	// *table test case
 	testCases := make(map[string]TestData)
 	testCases["simple"] = TestData{
-		Input: gointelx.TagParams{
+		Input: gothreatmatrix.TagParams{
 			Label: "TEST TAG",
 			Color: "#fffff",
 		},
 		Data:       `{"id": 1,"label": "TEST TAG","color": "#fffff"}`,
 		StatusCode: http.StatusOK,
-		Want: &gointelx.Tag{
+		Want: &gothreatmatrix.Tag{
 			ID:    1,
 			Label: "TEST TAG",
 			Color: "#fffff",
 		},
 	}
 	testCases["duplicate"] = TestData{
-		Input: gointelx.TagParams{
+		Input: gothreatmatrix.TagParams{
 			Label: "TEST TAG",
 			Color: "#fffff",
 		},
 		Data:       `{"label":["tag with this label already exists."]}`,
 		StatusCode: http.StatusBadRequest,
-		Want: &gointelx.IntelXError{
+		Want: &gothreatmatrix.IntelXError{
 			StatusCode: http.StatusBadRequest,
 			Message:    `{"label":["tag with this label already exists."]}`,
 		},
@@ -139,7 +139,7 @@ func TestTagServiceCreate(t *testing.T) {
 			defer closeServer()
 			ctx := context.Background()
 			apiHandler.Handle(constants.BASE_TAG_URL, serverHandler(t, testCase, "POST"))
-			tagParams, ok := testCase.Input.(gointelx.TagParams)
+			tagParams, ok := testCase.Input.(gothreatmatrix.TagParams)
 			if ok {
 				gottenTag, err := client.TagService.Create(ctx, &tagParams)
 				if err != nil {
@@ -158,14 +158,14 @@ func TestTagServiceUpdate(t *testing.T) {
 	// *table test case
 	testCases := make(map[string]TestData)
 	testCases["simple"] = TestData{
-		Input: gointelx.Tag{
+		Input: gothreatmatrix.Tag{
 			ID:    1,
 			Label: "UPDATED TEST TAG",
 			Color: "#f4",
 		},
 		Data:       `{"id": 1,"label": "UPDATED TEST TAG","color": "#f4"}`,
 		StatusCode: http.StatusOK,
-		Want: &gointelx.Tag{
+		Want: &gothreatmatrix.Tag{
 			ID:    1,
 			Label: "UPDATED TEST TAG",
 			Color: "#f4",
@@ -177,11 +177,11 @@ func TestTagServiceUpdate(t *testing.T) {
 			client, apiHandler, closeServer := setup()
 			defer closeServer()
 			ctx := context.Background()
-			tag, ok := testCase.Input.(gointelx.Tag)
+			tag, ok := testCase.Input.(gothreatmatrix.Tag)
 			if ok {
 				testUrl := fmt.Sprintf(constants.SPECIFIC_TAG_URL, tag.ID)
 				apiHandler.Handle(testUrl, serverHandler(t, testCase, "PUT"))
-				gottenTag, err := client.TagService.Update(ctx, tag.ID, &gointelx.TagParams{
+				gottenTag, err := client.TagService.Update(ctx, tag.ID, &gothreatmatrix.TagParams{
 					Label: tag.Label,
 					Color: tag.Color,
 				})

@@ -5,27 +5,27 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/khulnasoft/go-intelx/gointelx"
+	"github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 	"github.com/sirupsen/logrus"
 )
 
 func main() {
 
 	// Configuring the IntelXClient!
-	clientOptions := gointelx.IntelXClientOptions{
+	clientOptions := gothreatmatrix.IntelXClientOptions{
 		Url:         "PUT-YOUR-INTELX-INSTANCE-URL-HERE",
 		Token:       "PUT-YOUR-TOKEN-HERE",
 		Certificate: "",
 	}
 
-	loggerParams := &gointelx.LoggerParams{
+	loggerParams := &gothreatmatrix.LoggerParams{
 		File:      nil,
 		Formatter: &logrus.JSONFormatter{},
 		Level:     logrus.DebugLevel,
 	}
 
 	// Making the client!
-	client := gointelx.NewIntelXClient(
+	client := gothreatmatrix.NewIntelXClient(
 		&clientOptions,
 		nil,
 		loggerParams,
@@ -58,7 +58,7 @@ func main() {
 	}
 
 	// making the tag parameters!
-	tagParams := gointelx.TagParams{
+	tagParams := gothreatmatrix.TagParams{
 		Label: "your super duper cool tag label!",
 		Color: "#ffb703",
 	}

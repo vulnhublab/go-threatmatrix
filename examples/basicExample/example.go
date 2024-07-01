@@ -5,28 +5,28 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/khulnasoft/go-intelx/gointelx"
+	"github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 	"github.com/sirupsen/logrus"
 )
 
 func main() {
 
 	// Configuring the IntelXClient!
-	clientOptions := gointelx.IntelXClientOptions{
+	clientOptions := gothreatmatrix.IntelXClientOptions{
 		Url:         "PUT-YOUR-INTELX-INSTANCE-URL-HERE",
 		Token:       "PUT-YOUR-TOKEN-HERE",
 		Certificate: "",
 		Timeout:     0,
 	}
 
-	loggerParams := &gointelx.LoggerParams{
+	loggerParams := &gothreatmatrix.LoggerParams{
 		File:      nil,
 		Formatter: &logrus.JSONFormatter{},
 		Level:     logrus.DebugLevel,
 	}
 
 	// Making the client!
-	client := gointelx.NewIntelXClient(
+	client := gothreatmatrix.NewIntelXClient(
 		&clientOptions,
 		nil,
 		loggerParams,
@@ -34,16 +34,16 @@ func main() {
 
 	ctx := context.Background()
 
-	basicAnalysisParams := gointelx.BasicAnalysisParams{
+	basicAnalysisParams := gothreatmatrix.BasicAnalysisParams{
 		User:                 1,
-		Tlp:                  gointelx.WHITE,
+		Tlp:                  gothreatmatrix.WHITE,
 		RuntimeConfiguration: map[string]interface{}{},
 		AnalyzersRequested:   []string{},
 		ConnectorsRequested:  []string{},
 		TagsLabels:           []string{},
 	}
 
-	observableAnalysisParams := gointelx.ObservableAnalysisParams{
+	observableAnalysisParams := gothreatmatrix.ObservableAnalysisParams{
 		BasicAnalysisParams:      basicAnalysisParams,
 		ObservableName:           "192.168.69.42",
 		ObservableClassification: "ip",

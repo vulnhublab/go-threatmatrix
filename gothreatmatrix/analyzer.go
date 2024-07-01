@@ -1,4 +1,4 @@
-package gointelx
+package gothreatmatrix
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/khulnasoft/go-intelx/constants"
+	"github.com/khulnasoft/go-threatmatrix/constants"
 )
 
 // AnalyzerConfig represents how an analyzer is configured in IntelX.

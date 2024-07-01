@@ -1,8 +1,8 @@
-// go-intelx provides an SDK to easily integrate intelx with your own set of tools.
+// go-threatmatrix provides an SDK to easily integrate intelx with your own set of tools.
 
-// go-intelx makes it easy to automate, configure, and use intelx with your own set of tools
+// go-threatmatrix makes it easy to automate, configure, and use intelx with your own set of tools
 // with its Idiomatic approach making an analysis is easy as just writing one line of code!
-package gointelx
+package gothreatmatrix
 
 import (
 	"context"

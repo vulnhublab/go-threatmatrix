@@ -1,4 +1,4 @@
-package gointelx
+package gothreatmatrix
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/khulnasoft/go-intelx/constants"
+	"github.com/khulnasoft/go-threatmatrix/constants"
 )
 
 // TagParams represents the fields needed for creating and updating tags

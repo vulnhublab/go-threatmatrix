@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	"github.com/khulnasoft/go-intelx/gointelx"
+	"github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 	"github.com/sirupsen/logrus"
 )
 
@@ -15,11 +15,11 @@ func main() {
 			2. A *http.Client (if you do not provide one. One will be made by default)
 			3. LoggerParams
 		These are parameters that allow you to easily configure your IntelXClient to your liking.
-		For a better understanding you can read it in the documentation: https://github.com/khulnasoft/go-intelx/tree/main/examples/optionalParams
+		For a better understanding you can read it in the documentation: https://github.com/khulnasoft/go-threatmatrix/tree/main/examples/optionalParams
 	*/
 
 	// Configuring the IntelXClient!
-	clientOptions := gointelx.IntelXClientOptions{
+	clientOptions := gothreatmatrix.IntelXClientOptions{
 		Url:         "PUT-YOUR-INTELX-INSTANCE-URL-HERE",
 		Token:       "PUT-YOUR-TOKEN-HERE",
 		Certificate: "",
@@ -27,14 +27,14 @@ func main() {
 	}
 
 	// Configuring the logger
-	loggerParams := &gointelx.LoggerParams{
+	loggerParams := &gothreatmatrix.LoggerParams{
 		File:      nil,
 		Formatter: &logrus.JSONFormatter{},
 		Level:     logrus.DebugLevel,
 	}
 
 	// Making the client!
-	client := gointelx.NewIntelXClient(
+	client := gothreatmatrix.NewIntelXClient(
 		&clientOptions,
 		nil,
 		loggerParams,

@@ -13,7 +13,7 @@ Now from the documentation, you can see you can pass your `http.Client`. This is
 From `IntelXClientOptions` you can add your own timeout to your requests as well.
 
 ## Logger
-To ease  developers' work go-intelx provides a logger for easy debugging and tracking! For the logger we used [logrus](https://github.com/sirupsen/logrus) because of 2 reasons:
+To ease  developers' work go-threatmatrix provides a logger for easy debugging and tracking! For the logger we used [logrus](https://github.com/sirupsen/logrus) because of 2 reasons:
 1. Easy to use
 2. Extensible to your liking
 

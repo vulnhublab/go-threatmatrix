@@ -1,4 +1,4 @@
-package gointelx
+package gothreatmatrix
 
 import (
 	"io"

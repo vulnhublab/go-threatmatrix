@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/khulnasoft/go-intelx/constants"
-	"github.com/khulnasoft/go-intelx/gointelx"
+	"github.com/khulnasoft/go-threatmatrix/constants"
+	"github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 )
 
 func TestAnalyzerServiceGetConfigs(t *testing.T) {
@@ -46,11 +46,11 @@ func TestAnalyzerServiceGetConfigs(t *testing.T) {
 	}`
 	serverErrorString := `{"error": "Error occurred by the server"}`
 	badGatewayErrorString := `{"code": 502,"message": "Bad Gateway"}`
-	analyzerConfigurationResponse := map[string]gointelx.AnalyzerConfig{}
+	analyzerConfigurationResponse := map[string]gothreatmatrix.AnalyzerConfig{}
 	if unmarshalError := json.Unmarshal([]byte(analyzerConfigJsonString), &analyzerConfigurationResponse); unmarshalError != nil {
 		t.Fatalf("Error: %s", unmarshalError)
 	}
-	analyzerConfigurationList := []gointelx.AnalyzerConfig{}
+	analyzerConfigurationList := []gothreatmatrix.AnalyzerConfig{}
 	for _, analyzerConfig := range analyzerConfigurationResponse {
 		analyzerConfigurationList = append(analyzerConfigurationList, analyzerConfig)
 	}
@@ -66,7 +66,7 @@ func TestAnalyzerServiceGetConfigs(t *testing.T) {
 		Input:      nil,
 		Data:       serverErrorString,
 		StatusCode: http.StatusInternalServerError,
-		Want: &gointelx.IntelXError{
+		Want: &gothreatmatrix.IntelXError{
 			StatusCode: http.StatusInternalServerError,
 			Message:    serverErrorString,
 		},
@@ -75,7 +75,7 @@ func TestAnalyzerServiceGetConfigs(t *testing.T) {
 		Input:      nil,
 		Data:       badGatewayErrorString,
 		StatusCode: http.StatusBadGateway,
-		Want: &gointelx.IntelXError{
+		Want: &gothreatmatrix.IntelXError{
 			StatusCode: http.StatusBadGateway,
 			Message:    badGatewayErrorString,
 		},
@@ -110,7 +110,7 @@ func TestAnalyzerServiceHealthCheck(t *testing.T) {
 		Input:      "notAnAnalyzer",
 		Data:       `{"errors": {"detail": "Analyzer doesn't exist"}}`,
 		StatusCode: http.StatusBadRequest,
-		Want: &gointelx.IntelXError{
+		Want: &gothreatmatrix.IntelXError{
 			StatusCode: http.StatusBadRequest,
 			Message:    `{"errors": {"detail": "Analyzer doesn't exist"}}`,
 		},
