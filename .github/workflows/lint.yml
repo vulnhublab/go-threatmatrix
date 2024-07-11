@@ -1,9 +1,15 @@
-name: Lint
+name: 🙏🏻 Lint Test
 
-on: [push, pull_request]
+on:
+  pull_request:
+    paths:
+      - '**.go'
+      - '**.mod'
+  workflow_dispatch:
 
 jobs:
   lint:
+    name: Lint Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,5 +20,6 @@ jobs:
       - name: Lint
         uses: golangci/golangci-lint-action@v3
         with:
-          # Optional: version of golangci-lint to use in form of v1.2 or v1.2.3 or `latest` to use the latest version
           version: latest
+          args: --timeout 5m
+          working-directory: .
