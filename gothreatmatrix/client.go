@@ -60,6 +60,7 @@ type ThreatMatrixClient struct {
 	client           *http.Client
 	TagService       *TagService
 	JobService       *JobService
+	PlaybookService  *PlaybookService
 	AnalyzerService  *AnalyzerService
 	ConnectorService *ConnectorService
 	UserService      *UserService
@@ -160,6 +161,9 @@ func NewThreatMatrixClient(options *ThreatMatrixClientOptions, httpClient *http.
 	client.JobService = &JobService{
 		client: &client,
 	}
+	client.PlaybookService = &PlaybookService{
+		client: &client,
+	}
 	client.AnalyzerService = &AnalyzerService{
 		client: &client,
 	}
@@ -213,7 +217,6 @@ func (client *ThreatMatrixClient) buildRequest(ctx context.Context, method strin
 // newRequest is used for making requests.
 func (client *ThreatMatrixClient) newRequest(ctx context.Context, request *http.Request) (*successResponse, error) {
 	response, err := client.client.Do(request)
-
 	// Checking for context errors such as reaching the deadline and/or Timeout
 	if err != nil {
 		select {
