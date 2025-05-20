@@ -18,32 +18,43 @@ const (
 	RETRY_CONNECTOR_JOB_URL = SPECIFIC_JOB_URL + "/connector/%s/retry"
 )
 
+// These represent playbook endpoints URL
+const (
+	BASE_PLAYBOOK_URL = "/api/playbook"
+)
+
 // These represent analyzer endpoints URL
 const (
-	ANALYZER_CONFIG_URL      = "/api/get_analyzer_configs"
+	ANALYZER_CONFIG_URL      = "/api/analyzer"
 	ANALYZER_HEALTHCHECK_URL = "/api/analyzer/%s/healthcheck"
 )
 
 // These represent connector endpoints URL
 const (
-	CONNECTOR_CONFIG_URL      = "/api/get_connector_configs"
+	CONNECTOR_CONFIG_URL      = "/api/connector"
 	CONNECTOR_HEALTHCHECK_URL = "/api/connector/%s/healthcheck"
 )
 
 // These represent analyze endpoints URL
 const (
 	ANALYZE_OBSERVABLE_URL           = "/api/analyze_observable"
+	ANALYZE_OBSERVABLE_PLAYBOOK_URL  = "/api/playbook/analyze_multiple_observables"
 	ANALYZE_MULTIPLE_OBSERVABLES_URL = "/api/analyze_multiple_observables"
 	ANALYZE_FILE_URL                 = "/api/analyze_file"
+	ANALYZE_FILE_PLAYBOOK_URL        = "/api/playbook/analyze_multiple_files"
 	ANALYZE_MULTIPLE_FILES_URL       = "/api/analyze_multiple_files"
 )
 
 // These represent me endpoints URL
-
 const (
 	BASE_ME_URL                         = "/api/me"
 	USER_DETAILS_URL                    = BASE_ME_URL + "/access"
 	ORGANIZATION_URL                    = BASE_ME_URL + "/organization"
 	INVITE_TO_ORGANIZATION_URL          = ORGANIZATION_URL + "/invite"
 	REMOVE_MEMBER_FROM_ORGANIZATION_URL = ORGANIZATION_URL + "/remove_member"
+)
+
+// These represent REST API related constants
+const (
+	ContentTypeJSON = "application/json"
 )
