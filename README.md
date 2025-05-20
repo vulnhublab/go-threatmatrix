@@ -1,144 +1,167 @@
-# Go-ThreatMatrix
+# 🚀 Go-ThreatMatrix
+
 [![Go Reference](https://pkg.go.dev/badge/github.com/khulnasoft/go-threatmatrix.svg)](https://pkg.go.dev/github.com/khulnasoft/go-threatmatrix)
-[![GitHub issues](https://img.shields.io/github/issues/khulnasoft/go-threatmatrix?style=plastic)](https://github.com/khulnasoft/go-threatmatrix/issues)
-[![GitHub license](https://img.shields.io/github/license/khulnasoft/go-threatmatrix?style=plastic)](https://github.com/khulnasoft/go-threatmatrix/blob/main/LICENSE)
+[![Issues](https://img.shields.io/github/issues/khulnasoft/go-threatmatrix?color=blue&logo=github&logoColor=white&style=flat-square)](https://github.com/khulnasoft/go-threatmatrix/issues)
+[![License](https://img.shields.io/github/license/khulnasoft/go-threatmatrix?color=blueviolet&logo=open-source-initiative&style=flat-square)](https://github.com/khulnasoft/go-threatmatrix/blob/main/LICENSE)
 
-go-threatmatrix is a client library/SDK that allows developers to easily automate and integrate [ThreatMatrix](https://github.com/khulnasoft/ThreatMatrix) with their own set of tools!
+> A lightweight Go SDK to seamlessly integrate with [ThreatMatrix](https://github.com/khulnasoft/ThreatMatrix) for automation and threat intelligence.
 
-<!-- omit in toc -->
-# Table of Contents
-- [go-threatmatrix](#go-threatmatrix)
-- [Getting Started](#getting-started)
-	- [Pre requisites](#pre-requisites)
-	- [Installation](#installation)
-	- [Usage](#usage)
-	- [Examples](#examples)
-- [Contribute](#contribute)
-- [License](#liscence)
-- [Links](#links)
-- [FAQ](#faq)
-	- [Generate API key](#generate-api-key)
-		- [v4.0 and above](#v40-and-above)
-		- [v4.0 below](#v40-below)
+---
 
+## 📘 Table of Contents
 
+* [Overview](#-overview)
+* [🚀 Getting Started](#-getting-started)
 
-# Getting Started
+  * [📦 Prerequisites](#-prerequisites)
+  * [⚙️ Installation](#️-installation)
+  * [📌 Usage](#-usage)
+  * [🧪 Examples](#-examples)
+* [🤝 Contribute](#-contribute)
+* [📄 License](#-license)
+* [🔗 Links](#-links)
+* [❓ FAQ](#-faq)
 
-## Pre requisites
-- Go 1.17+
+---
 
-## Installation
-Use go get to retrieve the SDK to add it to your GOPATH workspace, or project's Go module dependencies.
+## 📖 Overview
+
+**go-threatmatrix** is a powerful and easy-to-use SDK that helps developers interact with the ThreatMatrix API effortlessly. It provides features to manage jobs, users, tags, and more — built with extensibility and developer happiness in mind.
+
+---
+
+## 🚀 Getting Started
+
+### 📦 Prerequisites
+
+* Go 1.17 or higher
+
+### ⚙️ Installation
+
+Install the SDK using `go get`:
 
 ```bash
-$ go get github.com/khulnasoft/go-threatmatrix
+go get github.com/khulnasoft/go-threatmatrix
 ```
 
-## Usage
-This library was built with ease of use in mind! Here are some quick examples to get you started. If you need more example you can go to the [examples directory](./examples/)
+---
 
-To start using the go-threatmatrix library you first need to import it:
-```
+### 📌 Usage
+
+To begin using the SDK, import the package and instantiate the client:
+
+```go
 import "github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 ```
-Construct a new `ThreatMatrixClient`, then use the various services to easily access different parts of Threatmatrix's REST API. Here's an example of getting all jobs:
 
-```Go
+#### 🔐 Create a client:
+
+```go
 clientOptions := gothreatmatrix.ThreatMatrixClientOptions{
-	Url:         "your-cool-URL-goes-here",
-	Token:       "your-super-secret-token-goes-here",
-	// This is optional
-	Certificate: "your-optional-certificate-goes-here",
+	Url:         "https://your-threatmatrix-url",
+	Token:       "your-api-token",
+	Certificate: "optional-cert", // Optional
 }
 
-threatmatrix := gothreatmatrix.NewThreatMatrixClient(
-	&clientOptions,
-	nil
-)
+client := gothreatmatrix.NewThreatMatrixClient(&clientOptions, nil)
 
 ctx := context.Background()
-
-// returns *[]Jobs or an ThreatMatrixError!
-jobs, err := threatmatrix.JobService.List(ctx)
+jobs, err := client.JobService.List(ctx)
 ```
-For easy configuration and set up we opted for `options` structs. Where we can customize the client API or service endpoint to our liking! For more information go [here](). Here's a quick example!
 
-```Go
-// ...Making the client and context!
+#### 🏷️ Create a Tag:
 
-tagOptions = gothreatmatrix.TagParams{
-  Label: "NEW TAG",
-  Color: "#ffb703",
+```go
+tagOptions := gothreatmatrix.TagParams{
+	Label: "NEW TAG",
+	Color: "#ffb703",
 }
 
-createdTag, err := threatmatrix.TagService.Create(ctx, tagOptions)
+createdTag, err := client.TagService.Create(ctx, tagOptions)
 if err != nil {
 	fmt.Println(err)
 } else {
 	fmt.Println(createdTag)
 }
 ```
-## Examples
-The [examples](./examples/) directory contains a couple for clear examples, of which one is partially listed here as well:
 
-```Go
+📚 For advanced configuration, refer to the [examples directory](./examples/) and [package docs](https://pkg.go.dev/github.com/khulnasoft/go-threatmatrix).
+
+---
+
+## 🧪 Examples
+
+```go
 package main
 
 import (
+	"context"
 	"fmt"
-
 	"github.com/khulnasoft/go-threatmatrix/gothreatmatrix"
 )
 
-func main(){
-	threatmatrixOptions := gothreatmatrix.ThreatMatrixClientOptions{
-		Url:         "your-cool-url-goes-here",
-		Token:       "your-super-secret-token-goes-here",
-		Certificate: "your-optional-certificate-goes-here",
-	}	
+func main() {
+	clientOptions := gothreatmatrix.ThreatMatrixClientOptions{
+		Url:         "https://your-url",
+		Token:       "your-api-token",
+		Certificate: "your-cert",
+	}
 
-	client := gothreatmatrix.NewThreatMatrixClient(
-		&threatmatrixOptions,
-		nil,
-	)
-
+	client := gothreatmatrix.NewThreatMatrixClient(&clientOptions, nil)
 	ctx := context.Background()
 
-	// Get User details!
 	user, err := client.UserService.Access(ctx)
 	if err != nil {
-		fmt.Println("err")
-		fmt.Println(err)
+		fmt.Println("Error:", err)
 	} else {
-		fmt.Println("USER Details")
-		fmt.Println(*user)
+		fmt.Println("User Details:", *user)
 	}
 }
-
 ```
-For complete usage of go-threatmatrix, see the full [package docs](https://pkg.go.dev/github.com/khulnasoft/go-threatmatrix).
 
-# Contribute
-If you want to follow the updates, discuss, contribute, or just chat then please join our [slack](https://honeynetpublic.slack.com/archives/C01KVGMAKL6) channel we'd love to hear your feedback!
+---
 
-# License
-Licensed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+## 🤝 Contribute
 
-# Links
-- [Threatmatrix](https://github.com/khulnasoft/ThreatMatrix)
-- [Documentation](https://threatmatrix.readthedocs.io/en/latest/)
-- [API documentation](https://threatmatrix.readthedocs.io/en/latest/Redoc.html)
-- [Examples](./examples/)
+We ❤️ contributions! Whether it's a feature request, bug fix, or suggestion — you're welcome to [join our Slack](https://honeynetpublic.slack.com/archives/C01KVGMAKL6) and get involved.
 
-# FAQ
-## Generate API key
-You need a valid API key to interact with the ThreatMatrix server.
-### v4.0 and above
-You can get an API by doing the following:
-1. Log / Signin into threatmatrix
-2. At the upper right click on your profile from the drop down select `API Access/ Sessions`
-3. Then generate an API key or see it!
+---
 
-### v4.0 below
-Keys should be created from the admin interface of [ThreatMatrix](https://github.com/khulnasoft/threatmatrix): you have to go in the *Durin* section (click on `Auth tokens`) and generate a key there.
+## 📄 License
+
+Licensed under the **GNU AFFERO GENERAL PUBLIC LICENSE**. See the [LICENSE](https://github.com/khulnasoft/go-threatmatrix/blob/main/LICENSE) file for details.
+
+---
+
+## 🔗 Links
+
+* 🌐 [ThreatMatrix](https://github.com/khulnasoft/ThreatMatrix)
+* 📚 [Documentation](https://threatmatrix.readthedocs.io/en/latest/)
+* 🔍 [API Docs](https://threatmatrix.readthedocs.io/en/latest/Redoc.html)
+* 💡 [Examples](./examples/)
+
+---
+
+## ❓ FAQ
+
+### 🔑 Generate API Key
+
+You need a valid API key to authenticate with the ThreatMatrix server.
+
+#### v4.0 and Above
+
+1. Login to ThreatMatrix
+2. Click your profile in the top right
+3. Select `API Access/Sessions`
+4. Generate or view your API key
+
+#### Below v4.0
+
+Generate API keys via the admin panel:
+
+* Navigate to **Durin → Auth Tokens** in the ThreatMatrix admin UI
+* Create a new key
+
+---
+
+Let me know if you'd like a version with badges aligned horizontally, embedded screenshots, dark theme styling, or monospace improvements.
