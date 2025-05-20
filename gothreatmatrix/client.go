@@ -9,15 +9,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
 	"time"
 )
 
-// ThreatMatrixError represents an error that has occurred when communicating with ThreatMatrix.
-type ThreatMatrixError struct {
+// Error represents an error that has occurred when communicating with ThreatMatrix.
+type Error struct {
 	StatusCode int
 	Message    string
 	Response   *http.Response
@@ -25,14 +24,14 @@ type ThreatMatrixError struct {
 
 // Error lets you implement the error interface.
 // This is used for making custom go errors.
-func (threatMatrixError *ThreatMatrixError) Error() string {
+func (threatMatrixError *Error) Error() string {
 	errorMessage := fmt.Sprintf("Status Code: %d \n Error: %s", threatMatrixError.StatusCode, threatMatrixError.Message)
 	return errorMessage
 }
 
-// newThreatMatrixError lets you easily create new ThreatMatrixErrors.
-func newThreatMatrixError(statusCode int, message string, response *http.Response) *ThreatMatrixError {
-	return &ThreatMatrixError{
+// newError lets you easily create new Errors.
+func newError(statusCode int, message string, response *http.Response) *Error {
+	return &Error{
 		StatusCode: statusCode,
 		Message:    message,
 		Response:   response,
@@ -44,8 +43,8 @@ type successResponse struct {
 	Data       []byte
 }
 
-// ThreatMatrixClientOptions represents the fields needed to configure and use the ThreatMatrixClient
-type ThreatMatrixClientOptions struct {
+// ClientOptions represents the fields needed to configure and use the Client
+type ClientOptions struct {
 	Url   string `json:"url"`
 	Token string `json:"token"`
 	// Certificate represents your SSL cert: path to the cert file!
@@ -54,16 +53,17 @@ type ThreatMatrixClientOptions struct {
 	Timeout uint64 `json:"timeout"`
 }
 
-// ThreatMatrixClient handles all the communication with your ThreatMatrix instance.
-type ThreatMatrixClient struct {
-	options          *ThreatMatrixClientOptions
+// Client handles all the communication with your ThreatMatrix instance.
+type Client struct {
+	options          *ClientOptions
 	client           *http.Client
 	TagService       *TagService
 	JobService       *JobService
+	PlaybookService  *PlaybookService
 	AnalyzerService  *AnalyzerService
 	ConnectorService *ConnectorService
 	UserService      *UserService
-	Logger           *ThreatMatrixLogger
+	Logger           *Logger
 }
 
 // TLP represents an enum for the TLP attribute used in ThreatMatrix's REST API.
@@ -113,7 +113,7 @@ func ParseTLP(s string) TLP {
 }
 
 // Implementing the MarshalJSON interface to make our custom Marshal for the enum
-func (tlp TLP) MarshalJSON() ([]byte, error) {
+func (tlp *TLP) MarshalJSON() ([]byte, error) {
 	return json.Marshal(tlp.String())
 }
 
@@ -129,8 +129,8 @@ func (tlp *TLP) UnmarshalJSON(data []byte) (err error) {
 	return nil
 }
 
-// NewThreatMatrixClient lets you easily create a new ThreatMatrixClient by providing ThreatMatrixClientOptions, http.Clients, and LoggerParams.
-func NewThreatMatrixClient(options *ThreatMatrixClientOptions, httpClient *http.Client, loggerParams *LoggerParams) ThreatMatrixClient {
+// NewClient lets you easily create a new Client by providing ClientOptions, http.Clients, and LoggerParams.
+func NewClient(options *ClientOptions, httpClient *http.Client, loggerParams *LoggerParams) Client {
 
 	var timeout time.Duration
 
@@ -148,7 +148,7 @@ func NewThreatMatrixClient(options *ThreatMatrixClientOptions, httpClient *http.
 	}
 
 	// configuring the client
-	client := ThreatMatrixClient{
+	client := Client{
 		options: options,
 		client:  httpClient,
 	}
@@ -158,6 +158,9 @@ func NewThreatMatrixClient(options *ThreatMatrixClientOptions, httpClient *http.
 		client: &client,
 	}
 	client.JobService = &JobService{
+		client: &client,
+	}
+	client.PlaybookService = &PlaybookService{
 		client: &client,
 	}
 	client.AnalyzerService = &AnalyzerService{
@@ -171,33 +174,33 @@ func NewThreatMatrixClient(options *ThreatMatrixClientOptions, httpClient *http.
 	}
 
 	// configuring the logger!
-	client.Logger = &ThreatMatrixLogger{}
+	client.Logger = &Logger{}
 	client.Logger.Init(loggerParams)
 
 	return client
 }
 
-// NewThreatMatrixClientThroughJsonFile lets you create a new ThreatMatrixClient through a JSON file that contains your ThreatMatrixClientOptions
-func NewThreatMatrixClientThroughJsonFile(filePath string, httpClient *http.Client, loggerParams *LoggerParams) (*ThreatMatrixClient, error) {
+// NewClientFromJsonFile lets you create a new Client through a JSON file that contains your ClientOptions
+func NewClientFromJsonFile(filePath string, httpClient *http.Client, loggerParams *LoggerParams) (*Client, error) {
 	optionsBytes, err := os.ReadFile(filePath)
 	if err != nil {
 		errorMessage := fmt.Sprintf("Could not read %s", filePath)
-		threatMatrixError := newThreatMatrixError(400, errorMessage, nil)
+		threatMatrixError := newError(400, errorMessage, nil)
 		return nil, threatMatrixError
 	}
 
-	threatMatrixClientOptions := &ThreatMatrixClientOptions{}
+	threatMatrixClientOptions := &ClientOptions{}
 	if unmarshalError := json.Unmarshal(optionsBytes, &threatMatrixClientOptions); unmarshalError != nil {
 		return nil, unmarshalError
 	}
 
-	threatMatrixClient := NewThreatMatrixClient(threatMatrixClientOptions, httpClient, loggerParams)
+	threatMatrixClient := NewClient(threatMatrixClientOptions, httpClient, loggerParams)
 
 	return &threatMatrixClient, nil
 }
 
 // buildRequest is used for building requests.
-func (client *ThreatMatrixClient) buildRequest(ctx context.Context, method string, contentType string, body io.Reader, url string) (*http.Request, error) {
+func (client *Client) buildRequest(ctx context.Context, method string, contentType string, body io.Reader, url string) (*http.Request, error) {
 	request, err := http.NewRequestWithContext(ctx, method, url, body)
 	if err != nil {
 		return nil, err
@@ -211,9 +214,8 @@ func (client *ThreatMatrixClient) buildRequest(ctx context.Context, method strin
 }
 
 // newRequest is used for making requests.
-func (client *ThreatMatrixClient) newRequest(ctx context.Context, request *http.Request) (*successResponse, error) {
+func (client *Client) newRequest(ctx context.Context, request *http.Request) (*successResponse, error) {
 	response, err := client.client.Do(request)
-
 	// Checking for context errors such as reaching the deadline and/or Timeout
 	if err != nil {
 		select {
@@ -226,17 +228,17 @@ func (client *ThreatMatrixClient) newRequest(ctx context.Context, request *http.
 
 	defer response.Body.Close()
 
-	msgBytes, err := ioutil.ReadAll(response.Body)
+	msgBytes, err := io.ReadAll(response.Body)
 	statusCode := response.StatusCode
 	if err != nil {
 		errorMessage := fmt.Sprintf("Could not convert JSON response. Status code: %d", statusCode)
-		threatMatrixError := newThreatMatrixError(statusCode, errorMessage, response)
+		threatMatrixError := newError(statusCode, errorMessage, response)
 		return nil, threatMatrixError
 	}
 
 	if statusCode < http.StatusOK || statusCode >= http.StatusBadRequest {
 		errorMessage := string(msgBytes)
-		threatMatrixError := newThreatMatrixError(statusCode, errorMessage, response)
+		threatMatrixError := newError(statusCode, errorMessage, response)
 		return nil, threatMatrixError
 	}
 

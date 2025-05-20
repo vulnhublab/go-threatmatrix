@@ -9,17 +9,17 @@ import (
 
 func main() {
 	/*
-		Making a new client through NewThreatMatrixClient:
+		Making a new client through NewClient:
 		This takes the following parameters:
-			1. ThreatMatrixClientOptions
+			1. ClientOptions
 			2. A *http.Client (if you do not provide one. One will be made by default)
 			3. LoggerParams
-		These are parameters that allow you to easily configure your ThreatMatrixClient to your liking.
+		These are parameters that allow you to easily configure your Client to your liking.
 		For a better understanding you can read it in the documentation: https://github.com/khulnasoft/go-threatmatrix/tree/main/examples/optionalParams
 	*/
 
-	// Configuring the ThreatMatrixClient!
-	clientOptions := gothreatmatrix.ThreatMatrixClientOptions{
+	// Configuring the Client!
+	clientOptions := gothreatmatrix.ClientOptions{
 		Url:         "PUT-YOUR-THREATMATRIX-INSTANCE-URL-HERE",
 		Token:       "PUT-YOUR-TOKEN-HERE",
 		Certificate: "",
@@ -34,7 +34,7 @@ func main() {
 	}
 
 	// Making the client!
-	client := gothreatmatrix.NewThreatMatrixClient(
+	client := gothreatmatrix.NewClient(
 		&clientOptions,
 		nil,
 		loggerParams,

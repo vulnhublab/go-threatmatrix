@@ -11,8 +11,8 @@ import (
 
 func main() {
 
-	// Configuring the ThreatMatrixClient!
-	clientOptions := gothreatmatrix.ThreatMatrixClientOptions{
+	// Configuring the Client!
+	clientOptions := gothreatmatrix.ClientOptions{
 		Url:         "PUT-YOUR-THREATMATRIX-INSTANCE-URL-HERE",
 		Token:       "PUT-YOUR-TOKEN-HERE",
 		Certificate: "",
@@ -25,7 +25,7 @@ func main() {
 	}
 
 	// Making the client!
-	client := gothreatmatrix.NewThreatMatrixClient(
+	client := gothreatmatrix.NewClient(
 		&clientOptions,
 		nil,
 		loggerParams,
@@ -42,7 +42,7 @@ func main() {
 
 	// Getting the tag list!
 	tagList, err := client.TagService.List(ctx)
-	// checking for any pesky errors if there's any error it'll return an ThreatMatrixError
+	// checking for any pesky errors if there's any error it'll return an Error
 	if err != nil {
 		fmt.Println(err)
 	} else {

@@ -73,7 +73,7 @@ func TestTagServiceGet(t *testing.T) {
 		Input:      9000,
 		StatusCode: http.StatusNotFound,
 		Data:       `{"detail": "Not found."}`,
-		Want: &gothreatmatrix.ThreatMatrixError{
+		Want: &gothreatmatrix.Error{
 			StatusCode: http.StatusNotFound,
 			Message:    `{"detail": "Not found."}`,
 		},
@@ -127,7 +127,7 @@ func TestTagServiceCreate(t *testing.T) {
 		},
 		Data:       `{"label":["tag with this label already exists."]}`,
 		StatusCode: http.StatusBadRequest,
-		Want: &gothreatmatrix.ThreatMatrixError{
+		Want: &gothreatmatrix.Error{
 			StatusCode: http.StatusBadRequest,
 			Message:    `{"label":["tag with this label already exists."]}`,
 		},
