@@ -11,8 +11,8 @@ import (
 
 func main() {
 
-	// Configuring the ThreatMatrixClient!
-	clientOptions := gothreatmatrix.ThreatMatrixClientOptions{
+	// Configuring the Client!
+	clientOptions := gothreatmatrix.ClientOptions{
 		Url:         "PUT-YOUR-THREATMATRIX-INSTANCE-URL-HERE",
 		Token:       "PUT-YOUR-TOKEN-HERE",
 		Certificate: "",
@@ -26,7 +26,7 @@ func main() {
 	}
 
 	// Making the client!
-	client := gothreatmatrix.NewThreatMatrixClient(
+	client := gothreatmatrix.NewClient(
 		&clientOptions,
 		nil,
 		loggerParams,

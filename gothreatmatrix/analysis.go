@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Khulnasoft/go-threatmatrix/constants"
+	"github.com/khulnasoft/go-threatmatrix/constants"
 )
 
 // BasicAnalysisParams represents the common fields in an Observable and a File analysis
